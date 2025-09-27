@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
-# Initialize SQLAlchemy
+# Initialise SQLAlchemy
 db = SQLAlchemy()
 
 class Event(db.Model):

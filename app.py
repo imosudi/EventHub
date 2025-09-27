@@ -14,7 +14,7 @@ app.config['SECRET_KEY'] = 'your-secret-key-here-change-in-production'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///events.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialize database with app
+# Initialise database with app
 db.init_app(app)
 
 # Routes
@@ -169,7 +169,7 @@ def create_tables():
     with app.app_context():
         db.create_all()
 
-# Initialize the application
+# Initialise the application
 if __name__ == '__main__':
     create_tables()
     app.run(debug=True)
