@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>All Events</h1>
+    <a href="{{ url_for('create_event') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Create New Event
+    </a>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-8">
+        <form method="GET" class="row g-2">
+            <div class="col-md-6">
+                <input type="text" name="search" class="form-control" placeholder="Search events by title or description..." 
+                       value="{{ request.args.get('search', '') }}">
+            </div>
+            <div class="col-md-4">
+                <select name="category" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Categories</option>
+                    <option value="conference" {% if request.args.get('category') == 'conference' %}selected{% endif %}>Conference</option>
+                    <option value="workshop" {% if request.args.get('category') == 'workshop' %}selected{% endif %}>Workshop</option>
+                    <option value="seminar" {% if request.args.get('category') == 'seminar' %}selected{% endif %}>Seminar</option>
+                    <option value="social" {% if request.args.get('category') == 'social' %}selected{% endif %}>Social Event</option>
+                    <option value="sports" {% if request.args.get('category') == 'sports' %}selected{% endif %}>Sports</option>
+                    <option value="other" {% if request.args.get('category') == 'other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-outline-primary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if events %}
+<div class="row">
+    {% for event in events %}
+    <div class="col-xl-4 col-lg-6 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge bg-primary">{{ event.category|title }}</span>
+                    <small class="text-muted">{{ event.date.strftime('%b %d, %Y') }}</small>
+                </div>
+                <h5 class="card-title">{{ event.title }}</h5>
+                <p class="card-text text-muted">{{ event.description[:150] }}...</p>
+                
+                <div class="event-meta small mb-3">
+                    <p class="mb-1"><i class="fas fa-clock me-2"></i>{{ event.time }}</p>
+                    <p class="mb-1"><i class="fas fa-map-marker-alt me-2"></i>{{ event.location }}</p>
+                    <p class="mb-0"><i class="fas fa-users me-2"></i>Max attendees: {{ event.max_attendees }}</p>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('event_detail', event_id=event.id) }}" class="btn btn-primary">
+                        View Details
+                    </a>
+                    <a href="{{ url_for('register_event', event_id=event.id) }}" class="btn btn-outline-primary">
+                        Register Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center py-5">
+    <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+    <h3>No events found</h3>
+    <p class="text-muted">Try adjusting your search criteria or create a new event.</p>
+    <a href="{{ url_for('create_event') }}" class="btn btn-primary">Create New Event</a>
+</div>
+{% endif %}
+{% endblock %}
