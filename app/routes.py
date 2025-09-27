@@ -1,21 +1,11 @@
+from app import app, db
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from datetime import datetime
 import os
 
 # Import models and forms
-from models import db, Event, Registration
-from forms import EventForm, RegistrationForm
-
-# Create Flask application instance
-app = Flask(__name__)
-
-# Configuration
-app.config['SECRET_KEY'] = 'your-secret-key-here-change-in-production'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///events.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Initialise database with app
-db.init_app(app)
+from .models import  Event, Registration
+from .forms import EventForm, RegistrationForm
 
 # Routes
 @app.route('/')
